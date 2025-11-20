@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SecureVPN – The VPN that just works</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #fdf7f2;
+      --bg-section: #fff;
+      --bg-accent: #ffe9e7;
+      --primary: #007c5a;
+      --primary-dark: #036145;
+      --text-main: #062341;
+      --text-muted: #4b5665;
+      --badge: #f7f1e8;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
+      --radius-lg: 18px;
+      --radius-xl: 26px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #f1f4f8;
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    .page-wrap {
+      max-width: 1120px;
+      margin: 36px auto;
+      background: var(--bg-main);
+      border-radius: 32px;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    /* Navbar */
+    .nav {
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .logo-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #ffb997, #ff5a5f);
+    }
+
+    .nav-right {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .nav-right span.arrow {
+      font-size: 0.75rem;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      padding: 40px 40px 90px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top, #ffe8d2 0, #ffe8d2 55%, transparent 60%),
+        linear-gradient(to right, #f2c090, #ec9b75 35%, #e47263 70%, #d65470);
+      transform: translateY(-30%);
+      z-index: 0;
+      opacity: 0.9;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 18px;
+      margin-top: 80px;
+    }
+
+    .hero-badge {
+      background: var(--badge);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      box-shadow: 0 8px 25px rgba(15, 23, 42, 0.12);
+    }
+
+    .hero-title {
+      font-family: "Playfair Display", serif;
+      font-size: 2.6rem;
+      max-width: 600px;
+      color: #08213d;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 28px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 4px;
+      box-shadow: 0 14px 30px rgba(1, 96, 69, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 18px 38px rgba(1, 96, 69, 0.4);
+    }
+
+    .btn-primary span.arrow {
+      font-size: 1.1rem;
+      transform: translateY(1px);
+    }
+
+    .hero-guarantee {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      color: #f8fafc;
+      opacity: 0.85;
+    }
+
+    .hero-illustration {
+      margin-top: 45px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-illustration-inner {
+      width: 340px;
+      height: 140px;
+      border-radius: 18px;
+      background:
+        linear-gradient(to top, #ef4444, #fb923c);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-illustration-inner::before {
+      content: "";
+      position: absolute;
+      inset: auto 10% 32%;
+      height: 3px;
+      background: rgba(248, 250, 252, 0.45);
+      border-radius: 999px;
+    }
+
+    /* Simple “people” illustration */
+    .person {
+      position: absolute;
+      bottom: 26px;
+      width: 32px;
+      height: 70px;
+      border-radius: 20px;
+      background: #111827;
+    }
+
+    .person::before {
+      content: "";
+      position: absolute;
+      top: -18px;
+      left: 8px;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #fed7aa;
+    }
+
+    .person.one { left: 34%; background: #111827; }
+    .person.two { left: 48%; background: #1e293b; }
+    .person.three { left: 60%; background: #111827; }
+
+    /* Shared section styles */
+    .section {
+      padding: 60px 40px;
+      background: var(--bg-section);
+    }
+
+    .section + .section {
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .section-inner {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+      gap: 52px;
+      align-items: center;
+    }
+
+    .section-heading {
+      font-family: "Playfair Display", serif;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #06162a;
+    }
+
+    .section-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 420px;
+    }
+
+    .card-illustration {
+      width: 100%;
+      max-width: 280px;
+      height: 180px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(145deg, #c0e3ff, #eff6ff);
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-illustration.grid-block {
+      background: linear-gradient(135deg, #cbd5f5, #e2e8f0);
+    }
+
+    .grid-row {
+      position: absolute;
+      inset: 18px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .grid-cell {
+      background: rgba(15, 23, 42, 0.16);
+      border-radius: 6px;
+    }
+
+    .grid-cloud {
+      position: absolute;
+      right: 18px;
+      bottom: 24px;
+      width: 80px;
+      height: 40px;
+      border-radius: 999px;
+      background: #e5f3ff;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+    }
+
+    .grid-cloud::before {
+      content: "";
+      position: absolute;
+      left: -18px;
+      top: 6px;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: #eff6ff;
+    }
+
+    .grid-mouse {
+      position: absolute;
+      right: 38px;
+      top: 60px;
+      width: 10px;
+      height: 16px;
+      border-radius: 999px;
+      border: 2px solid #f9fafb;
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid #cbd5f5;
+      background: transparent;
+      padding: 7px 18px;
+      font-size: 0.82rem;
+      margin-top: 14px;
+      cursor: pointer;
+      color: var(--primary-dark);
+      font-weight: 500;
+    }
+
+    /* One-click section illustration */
+    .lamp-illustration {
+      width: 100%;
+      max-width: 260px;
+      height: 200px;
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at 20% 0, #fed7aa, #fec089);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.18);
+    }
+
+    .lamp-shade {
+      position: absolute;
+      top: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 90px;
+      background: linear-gradient(to bottom, #fde68a, #fbbf24);
+      border-radius: 90px 90px 55px 55px;
+    }
+
+    .lamp-wire {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 30px;
+      background: #1f2937;
+      transform: translateX(-50%);
+    }
+
+    .lamp-glow {
+      position: absolute;
+      top: 76px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 140px;
+      background: radial-gradient(circle at 50% 0, rgba(254, 243, 199, 0.8), rgba(253, 230, 138, 0));
+      opacity: 0.9;
+    }
+
+    .lamp-screen {
+      position: absolute;
+      bottom: 26px;
+      left: 14%;
+      width: 70%;
+      height: 52px;
+      border-radius: 14px;
+      background: #f97316;
+      opacity: 0.9;
+    }
+
+    .lamp-plant {
+      position: absolute;
+      right: 18px;
+      bottom: 24px;
+      width: 34px;
+      height: 46px;
+      border-radius: 16px 16px 6px 6px;
+      background: #f1f5f9;
+    }
+
+    .lamp-plant::before {
+      content: "";
+      position: absolute;
+      top: -18px;
+      left: 6px;
+      width: 22px;
+      height: 26px;
+      border-radius: 26px 26px 0 26px;
+      background: #22c55e;
+    }
+
+    /* Device section illustration */
+    .device-illustration {
+      width: 100%;
+      max-width: 320px;
+      height: 190px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #f97316, #fecaca);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px 26px;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.2);
+    }
+
+    .device {
+      border-radius: 16px;
+      background: #111827;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .device::before {
+      content: "";
+      width: 60%;
+      height: 34%;
+      border-radius: 999px;
+      background: radial-gradient(circle at 10% 0, #22c55e, #15803d);
+    }
+
+    .device.laptop {
+      width: 140px;
+      height: 80px;
+    }
+
+    .device.tablet {
+      width: 70px;
+      height: 96px;
+      background: #111827;
+    }
+
+    .device.phone {
+      width: 40px;
+      height: 78px;
+      border-radius: 14px;
+      background: #0f172a;
+    }
+
+    .device-badge {
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.75);
+      color: #f9fafb;
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .device-badge span.dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .apps-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .app-pill {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4b5563;
+    }
+
+    .see-all-link {
+      margin-top: 10px;
+      font-size: 0.74rem;
+      color: var(--primary-dark);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Three-feature section */
+    .section.features {
+      text-align: center;
+    }
+
+    .feature-grid {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .feat-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feat-icon.one {
+      background: linear-gradient(135deg, #facc15, #f97316);
+    }
+
+    .feat-icon.two {
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+    }
+
+    .feat-icon.three {
+      background: linear-gradient(135deg, #fb7185, #fb923c);
+    }
+
+    .feat-icon-inner {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .feature-title {
+      font-weight: 600;
+      font-size: 0.94rem;
+    }
+
+    .feature-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      max-width: 240px;
+    }
+
+    .more-link {
+      margin-top: 22px;
+      font-size: 0.78rem;
+      color: var(--primary-dark);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+
+    /* Map section */
+    .map-section {
+      padding: 60px 40px 70px;
+      background: #fff3f6;
+    }
+
+    .map-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+      gap: 40px;
+      align-items: center;
+    }
+
+    .map-title {
+      font-family: "Playfair Display", serif;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      color: #06162a;
+    }
+
+    .map-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 22px;
+      background-image: radial-gradient(circle at 20% 30%, #fb7185, transparent 55%),
+        radial-gradient(circle at 50% 60%, #f97316, transparent 60%),
+        radial-gradient(circle at 80% 30%, #ef4444, transparent 55%);
+      background-color: #fecdd3;
+      opacity: 0.9;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-dots {
+      position: absolute;
+      inset: 16px;
+      background-image: radial-gradient(circle, rgba(248, 250, 252, 0.85) 1px, transparent 1px);
+      background-size: 12px 12px;
+      opacity: 0.35;
+    }
+
+    .stats {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+    }
+
+    .stat-item h3 {
+      font-size: 1.6rem;
+      margin-bottom: 2px;
+    }
+
+    .stat-item p {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .map-footer-link {
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: var(--primary-dark);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 18px 40px 26px;
+      background: var(--bg-main);
+      font-size: 0.75rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 840px) {
+      .page-wrap {
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .nav, .hero, .section, .map-section, .footer {
+        padding-inline: 20px;
+      }
+
+      .hero-inner {
+        margin-top: 60px;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .two-column,
+      .map-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .card-illustration,
+      .lamp-illustration,
+      .device-illustration {
+        margin-inline: auto;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-illustration-inner {
+        transform: scale(0.95);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- NAVBAR -->
+  <header class="nav">
+    <div class="nav-left">
+      <div class="logo-circle"></div>
+      <span>SecureVPN</span>
+    </div>
+    <div class="nav-right">
+      <span>English</span>
+      <span class="arrow">▼</span>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+
+    <div class="hero-inner">
+      <div class="hero-badge">Trusted privacy &amp; security</div>
+      <h1 class="hero-title">The VPN that just works</h1>
+      <p class="hero-subtitle">
+        Go further with the trusted leader in secure, fast VPN connections.
+      </p>
+      <button class="btn-primary">
+        <span>Get SecureVPN</span>
+        <span class="arrow">➜</span>
+      </button>
+      <p class="hero-guarantee">30-day money-back guarantee</p>
+
+      <div class="hero-illustration">
+        <div class="hero-illustration-inner">
+          <div class="person one"></div>
+          <div class="person two"></div>
+          <div class="person three"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURE ACCESS SECTION -->
+  <section class="section">
+    <div class="section-inner two-column">
+      <div class="card-illustration grid-block">
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="grid-cloud"></div>
+        <div class="grid-mouse"></div>
+      </div>
+
+      <div>
+        <h2 class="section-heading">Secure access, worldwide</h2>
+        <p class="section-text">
+          Connect reliably from anywhere, to anywhere. Our high-speed network spans
+          the globe so your favorite content is always within reach, while your
+          identity stays protected.
+        </p>
+        <button class="btn-primary" style="margin-top:18px;">
+          <span>Get SecureVPN</span>
+          <span class="arrow">➜</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ONE CLICK SECTION -->
+  <section class="section">
+    <div class="section-inner two-column">
+      <div>
+        <h2 class="section-heading">One click to a safer internet</h2>
+        <p class="section-text">
+          Going online shouldn’t mean being exposed. Whether you’re shopping,
+          streaming, or working remotely, SecureVPN keeps your personal data
+          encrypted and private in just one tap.
+        </p>
+      </div>
+
+      <div class="lamp-illustration">
+        <div class="lamp-wire"></div>
+        <div class="lamp-shade"></div>
+        <div class="lamp-glow"></div>
+        <div class="lamp-screen"></div>
+        <div class="lamp-plant"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEVICES SECTION -->
+  <section class="section">
+    <div class="section-inner two-column">
+      <div class="device-illustration">
+        <div class="device-badge">
+          <span class="dot"></span>
+          <span>Protected</span>
+        </div>
+
+        <div class="device laptop"></div>
+        <div class="device tablet"></div>
+        <div class="device phone"></div>
+      </div>
+
+      <div>
+        <h2 class="section-heading">Use SecureVPN on every device</h2>
+        <p class="section-text">
+          Phone, tablet, laptop, or router—wherever you go, SecureVPN goes with you.
+          One subscription protects all your favorite devices at home or on the go.
+        </p>
+
+        <div class="apps-row">
+          <span class="app-pill">Windows</span>
+          <span class="app-pill">macOS</span>
+          <span class="app-pill">Android</span>
+          <span class="app-pill">iOS</span>
+          <span class="app-pill">Linux</span>
+          <span class="app-pill">Browser extensions</span>
+        </div>
+
+        <div class="see-all-link">
+          <span>See all apps</span> <span>➜</span>
+        </div>
+
+        <button class="btn-primary" style="margin-top:14px;">
+          <span>Get SecureVPN</span>
+          <span class="arrow">➜</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- THREE FEATURES SECTION -->
+  <section class="section features">
+    <div class="section-inner">
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="feat-icon one">
+            <div class="feat-icon-inner"></div>
+          </div>
+          <div class="feature-title">Stronger data protection</div>
+          <p class="feature-text">
+            Take charge of your privacy with next-generation encryption and leak
+            protection on every connection.
+          </p>
+        </div>
+
+        <div class="feature-item">
+          <div class="feat-icon two">
+            <div class="feat-icon-inner"></div>
+          </div>
+          <div class="feature-title">Works seamlessly everywhere</div>
+          <p class="feature-text">
+            Enjoy the internet as it’s meant to be—whether you’re at home, in a café,
+            or traveling abroad.
+          </p>
+        </div>
+
+        <div class="feature-item">
+          <div class="feat-icon three">
+            <div class="feat-icon-inner"></div>
+          </div>
+          <div class="feature-title">Lightning-quick connectivity</div>
+          <p class="feature-text">
+            Experience HD streaming, gaming, and browsing with servers built for
+            speed and stability.
+          </p>
+        </div>
+      </div>
+
+      <div class="more-link">See more advantages ➜</div>
+    </div>
+  </section>
+
+  <!-- MAP / SERVERS SECTION -->
+  <section class="map-section">
+    <div class="map-inner">
+      <div>
+        <h2 class="map-title">Ultra-fast servers around the globe</h2>
+        <div class="map-placeholder">
+          <div class="map-dots"></div>
+        </div>
+        <div class="map-footer-link">
+          See our full list of VPN locations ➜
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-item">
+          <h3>160</h3>
+          <p>locations</p>
+        </div>
+        <div class="stat-item">
+          <h3>94</h3>
+          <p>countries</p>
+        </div>
+        <div class="stat-item">
+          <h3>∞</h3>
+          <p>unlimited bandwidth</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    © 2025 SecureVPN. All rights reserved.
+  </footer>
+
+</div>
+
+</body>
+</html>
