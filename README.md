@@ -1,9 +1,9 @@
-# SecureVPN Landing Page
+l# SecureVPN Landing Page
 
 A modern, responsive landing page for a VPN service (“SecureVPN”), inspired by ExpressVPN’s marketing page.  
 Built with **pure HTML and CSS** (no frameworks) to practice layout, typography, and component-based design.
 
-Live Demo: https://utsavdwivedi.github.io/Landing-Page/
+Live Demo: https://utsavdwivedi51.github.io/Landing-Page/
 
 ## Overview
 
